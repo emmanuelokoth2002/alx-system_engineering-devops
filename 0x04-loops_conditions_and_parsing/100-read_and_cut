@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#script that displays the content of the file /etc/passwd
 
 echo "username user_id home_directory"
 while read -r line; do

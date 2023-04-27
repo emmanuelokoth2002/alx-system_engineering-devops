@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script displays "Best School", "Bad Luck", or "Good Luck" depending on the iteration, using a while loop and if statements
+# This script displays "Best School", "Bad Luck", or "Good Luck" depending on the iteration
 
 counter=1
 while [ $counter -le 10 ]

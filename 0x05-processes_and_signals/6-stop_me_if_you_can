@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Find the PID of the 4-to_infinity_and_beyond process
+
+pid=$(pgrep '4-to_infinity_and_beyond')
+if [ -z "$pid" ]; then
+  echo "4-to_infinity_and_beyond process is not running."
+else
+  pkill -P "$pid"
+  echo "4-to_infinity_and_beyond process stopped."
+fi

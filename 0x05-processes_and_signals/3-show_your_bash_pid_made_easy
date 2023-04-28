@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Get a list of all running processes using the /proc filesystem
+
+for pid in /proc/*/; do
+  if [ -f "${pid}cmdline" ]; then
+    process_name=$(awk '{print $1}' "${pid}cmdline" | tr '\0' ' ')
+    if echo "$process_name" | grep -q "bash"; then
+      process_pid=$(basename "$pid")
+      echo "$process_pid: $process_name"
+    fi
+  fi
+done
+

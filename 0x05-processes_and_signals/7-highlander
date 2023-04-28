@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#Bash script that displays to infinity and beyond indefinitely
+
+pid=$(pgrep '7-highlander')
+if [ -z "$pid" ]; then
+  echo "7-highlander process is not running."
+else
+  pkill -P "$pid"
+  echo "7-highlander process stopped."
+fi

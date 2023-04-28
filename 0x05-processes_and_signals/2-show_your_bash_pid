@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#script that displays lines containing the bash word
+
+ps aux | grep bash | grep -v grep | awk '{print $2" : "$0}' | grep -i bash
+

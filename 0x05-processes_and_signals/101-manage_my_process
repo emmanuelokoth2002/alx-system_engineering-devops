@@ -1,0 +1,65 @@
+#!/bin/bash
+# Define variables
+
+PID_FILE=/var/run/my_process.pid
+SCRIPT=manage_my_process
+
+# Check if PID file exists
+if [ -e $PID_FILE ]; then
+  PID=$(cat $PID_FILE)
+else
+  PID=""
+fi
+
+# Define functions
+start_process () {
+  # Start process
+  ./$SCRIPT &
+  PID=$!
+  # Save PID to file
+  echo $PID > $PID_FILE
+  # Display message
+  echo "$SCRIPT started"
+}
+
+stop_process () {
+  # Stop process if running
+  if [ ! -z "$PID" ]; then
+    kill $PID
+    # Wait for process to stop
+    sleep 1
+    # Delete PID file
+    rm $PID_FILE
+    # Reset PID variable
+    PID=""
+    # Display message
+    echo "$SCRIPT stopped"
+  fi
+}
+
+restart_process () {
+  stop_process
+  start_process
+  # Display message
+  echo "$SCRIPT restarted"
+}
+
+# Check arguments
+case "$1" in
+  start)
+    start_process
+    ;;
+  stop)
+    stop_process
+    ;;
+  restart)
+    restart_process
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0
+

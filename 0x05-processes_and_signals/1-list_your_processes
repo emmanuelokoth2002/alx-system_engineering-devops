@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Use ps command to show all processes (-e), including those without a TTY (-o tty=), in a user-oriented format
+
+ps -e -o user=,pid=,ppid=,start_time=,cmd= --sort=start_time | awk '{printf("%-8s %-8s %-8s %-22s %s\n", $1, $2, $3, $4, $5)}'
+

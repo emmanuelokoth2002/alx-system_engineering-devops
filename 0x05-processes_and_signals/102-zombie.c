@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/*
+ * Write a C program that creates 5 zombie processes.
+ *
+ */
 int infinite_while(void)
 {
     while (1)

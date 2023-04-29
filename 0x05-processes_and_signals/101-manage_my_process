@@ -1,30 +1,24 @@
-#!/bin/bash
-# Define variables
+#!/usr/bin/env bash
+#management
 
 PID_FILE=/var/run/my_process.pid
 SCRIPT=manage_my_process
 
-# Check if PID file exists
 if [ -e $PID_FILE ]; then
   PID=$(cat $PID_FILE)
 else
   PID=""
 fi
 
-# Define functions
 start_process () {
-  # Start process
   ./$SCRIPT &
   PID=$!
-  # Save PID to file
   echo $PID > $PID_FILE
-  # Display message
   echo "$SCRIPT started"
 }
 
 stop_process () {
-  # Stop process if running
-  if [ ! -z "$PID" ]; then
+   if [ ! -z "$PID" ]; then
     kill $PID
     # Wait for process to stop
     sleep 1

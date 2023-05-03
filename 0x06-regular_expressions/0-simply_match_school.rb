@@ -1,6 +1,3 @@
 #!/usr/bin/env ruby
-
-string = ARGV[0]
-regex = /School/
-matches = string.scan(Oniguruma::ORegexp.new(regex)).join('$') + '$'
-puts matches
+# Ruby script that accepts one argument and pass it to a regular expression matching method
+puts ARGV[0].scan(/school/).join

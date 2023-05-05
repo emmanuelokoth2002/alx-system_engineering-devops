@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 # Check if the script is run as root
+file_host=~/hosts.new
+cp /etc/hosts $file_host
 
-if [ "$EUID" -ne 0 ]
-  then echo "Please run this script as root"
-  exit
-fi
+sed -i -e "$a\\n127.0.0.2\t127.0.0.1" $file_host
+sed -i -e "$a\\n8.8.8.8\tfacebook.com\n" $file_host
 
-echo "127.0.0.2 localhost" >> /etc/hosts
-echo "8.8.8.8 facebook.com" >> /etc/hosts
-systemctl restart networking.service
-
+cp -f $file_host /etc/hosts

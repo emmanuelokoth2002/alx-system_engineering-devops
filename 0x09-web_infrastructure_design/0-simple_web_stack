@@ -1,0 +1,18 @@
+https://postimg.cc/B8jdmh94
+
+PART A:
+1. User Access: When a user wants to access the website, they enter the URL www.foobar.com into their web browser.
+2. Domain Name: The domain name, in this case, www.foobar.com, acts as a human-readable label for the website. It provides a memorable and user-friendly way to identify and access the website. The domain name system (DNS) translates the domain name into an IP address, allowing users' requests to reach the correct server.
+3. DNS Record: The "www" in www.foobar.com represents a subdomain. It is typically used to indicate the web server component of a website. The DNS record associated with the subdomain "www" should be a CNAME record pointing to the main domain, foobar.com, which has an A record pointing to the server's IP address (e.g., 8.8.8.8). This configuration ensures that requests for www.foobar.com are correctly directed to the server.
+4. Server: In this infrastructure, a server refers to a physical or virtual machine that hosts the various components of the web application. It runs the necessary software and services to handle incoming requests and respond with the appropriate content.
+5. Web Server (Nginx): The web server, such as Nginx, plays a crucial role in this infrastructure. It receives incoming HTTP requests from users and serves static files directly to the users' web browsers. For dynamic content, the web server passes the requests to the application server for processing.
+6. Application Server: The application server is responsible for executing the application codebase, handling dynamic content generation, and interacting with the web server. It runs the necessary software frameworks or languages (e.g., PHP, Python, Ruby) to process requests, retrieve data from the database, and generate dynamic web pages. The web server communicates with the application server using protocols like FastCGI or HTTP.
+7. Application Files: The application files represent the codebase of the web application. They include the necessary scripts, stylesheets, templates, and other resources required to render the website's content dynamically.
+8. Database (MySQL): The database stores and manages the website's data. In this case, MySQL is used as the database management system. The application server communicates with the database to retrieve or store data necessary for the web application's functionality.
+9. Server-User Communication: When a user requests the website, the server uses the HTTP protocol to communicate with the user's computer. The server processes the request, retrieves the appropriate content, and sends it back to the user's browser over the network using HTTP.
+
+PART B:
+Issues with this Infrastructure:
+1. Single Point of Failure (SPOF): Since all components, including the web server, application server, and database, are running on a single server, any failure or downtime of that server would render the entire website inaccessible. A hardware failure, network issue, or other problems with the server could result in a complete service outage.
+2. Downtime during Maintenance: Performing maintenance tasks, such as deploying new code or applying updates, requires restarting the web server. During this restart process, the website may experience downtime, resulting in users being unable to access the site temporarily.
+3. Limited Scalability: With a single server handling all the incoming traffic, the infrastructure may face limitations in handling a large number of concurrent users or sudden spikes in traffic. Scaling the infrastructure to accommodate higher traffic volumes would require additional servers, load balancers, and more sophisticated infrastructure design.

@@ -1,0 +1,22 @@
+https://postimg.cc/KRQrRxKs
+
+PART A:
+Explanation of Infrastructure:
+1. Server 1 (Web Server: Nginx): The web server component (Nginx) remains the same as in the previous design. It handles incoming HTTP/HTTPS requests, serves static files, and passes dynamic requests to the application servers.
+2. Server 2 and Server 3 (Application Servers): Both Server 2 and Server 3 act as application servers, executing the codebase, handling dynamic content, and communicating with the database. The presence of multiple application servers ensures redundancy, scalability, and load balancing.
+3. Load Balancer (HAProxy): The load balancer (HAProxy) distributes incoming requests across the available application servers to achieve better performance, scalability, and fault tolerance.
+4. Database (MySQL): The database component (MySQL) remains the same as before, storing and managing the website's data. The application servers communicate with the database to retrieve or store information.
+5. Firewall (per server): The addition of firewalls provides security by controlling network traffic to and from each server. Firewalls can be configured to allow only specific types of traffic, block unauthorized access attempts, and prevent malicious activity.
+6. SSL Certificate: By obtaining an SSL certificate, the infrastructure can serve the website over HTTPS. HTTPS ensures secure and encrypted communication between the server and the user's browser, protecting sensitive data from interception or tampering.
+7. Monitoring Clients (Data Collectors): The monitoring clients collect data from each server, enabling comprehensive monitoring and analysis of system performance, availability, and potential issues. These clients serve as data collectors, forwarding the relevant information to a monitoring service like Sumo Logic or other monitoring tools.
+
+PART B:
+Specifics of the Infrastructure:
+• Termination of SSL at the Load Balancer Level: Terminating SSL at the load balancer level can be an issue because it adds an extra point of vulnerability. It means that the decrypted traffic is sent internally from the load balancer to the application servers, potentially exposing it to unauthorized access. Encrypting the traffic between the load balancer and application servers (end-to-end encryption) is a more secure approach.
+• MySQL Server Capable of Accepting Writes: Having only one MySQL server capable of accepting writes creates a single point of failure. If this server fails, write operations to the database become impossible. Implementing a MySQL cluster or replica set with multiple nodes allows for high availability, failover, and load distribution.
+• Servers with the Same Components: Having servers with all the same components (database, web server, and application server) can be a problem if those servers experience simultaneous failures or issues. By diversifying the components across multiple servers, the infrastructure becomes more resilient to individual component failures and can continue to operate partially even if some servers experience problems.
+
+PART C:
+Issues with this Infrastructure:
+1. SPOF in the SSL Termination: Terminating SSL at the load balancer level creates a single point of failure. If the load balancer fails, SSL termination and decryption become unavailable, leading to a disruption in secure communication.
+2. Single MySQL Server for Writes: Relying on a single MySQL server for write operations introduces a single point of failure. If that server fails,

@@ -1,0 +1,9 @@
+https://postimg.cc/5YQMnLkY
+
+Reasoning Behind the Additional Elements:
+Adding a load balancer, separate web server, application server, and database server brings several benefits to the infrastructure:
+• Scalability: By distributing the workload across multiple servers, the infrastructure can handle increasing traffic and scale horizontally as needed. The load balancer ensures that requests are evenly distributed among the servers, optimizing resource utilization.
+• Fault Tolerance: Separating components across different servers reduces the risk of a single point of failure. In case of server failures, other servers continue to serve requests, improving the overall availability and reliability of the application.
+• Performance: Allocating dedicated resources to specific functions, such as the web server and application server, allows for optimized performance. Each server can be fine-tuned based on its specific requirements, resulting in improved response times and better user experience.
+• Security: By separating the web server and application server, potential vulnerabilities are compartmentalized. Security measures can be tailored to each component individually, reducing the attack surface and enhancing overall system security.
+• Maintainability: Having distinct servers for each component simplifies maintenance and updates. Changes can be made to specific components without impacting the entire infrastructure, reducing downtime and making the system more manageable.

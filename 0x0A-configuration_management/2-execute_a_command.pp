@@ -1,6 +1,3 @@
 #create a manifest to kill process named killmenow
-exec { 'killmenow':
-  command     => 'pkill killmenow',
-  path        => '/usr/bin:/usr/sbin:/bin:/sbin',
-  refreshonly => true,
+exec { '/usr/bin/env pkill -9 killmenow':
 }

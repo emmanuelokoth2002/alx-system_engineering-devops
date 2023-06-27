@@ -3,11 +3,18 @@
 apt-get update
 apt-get install -y nginx
 
-# Configure nginx to listen on port 80
-sed -i 's/listen\s*80;/listen 80 default_server;/g' /etc/nginx/sites-available/default
+# Configure Nginx to listen on port 80
+echo "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
 
-# Restart nginx
-service nginx restart
+    location / {
+        echo 'Hello World!';
+    }
+}" > /etc/nginx/sites-available/default
 
-# Create index.html file
-echo "Hello World!" > /var/www/html/index.html
+# Restart Nginx without using systemctl
+service nginx restart > /dev/null 2>&1
+
+# Output success message
+echo "Nginx installation and configuration complete!"

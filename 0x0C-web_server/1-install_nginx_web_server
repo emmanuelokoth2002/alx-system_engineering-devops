@@ -7,14 +7,13 @@ apt-get install -y nginx
 echo "server {
     listen 80 default_server;
     listen [::]:80 default_server;
-
+    root /var/www/html;
+    index index.html;
+    server_name _;
     location / {
         echo 'Hello World!';
     }
 }" > /etc/nginx/sites-available/default
 
-# Restart Nginx without using systemctl
-service nginx restart > /dev/null 2>&1
-
-# Output success message
-echo "Nginx installation and configuration complete!"
+# Restart Nginx
+service nginx restart

@@ -1,36 +1,25 @@
 #!/usr/bin/env bash
 # Puppet manifest containing commands to automatically configure an Ubuntu machine
-class nginx_server {
-  package { 'nginx':
-    ensure => installed,
-  }
-
-  file { '/etc/nginx/sites-available/default':
-    ensure  => file,
-    content => '
-      server {
-        listen 80;
-        root /var/www/html;
-        
-        location / {
-          return 301 http://example.com/redirect_me;
-        }
-
-        location /redirect_me {
-          return 200 "Hello World!";
-        }
-      }
-    ',
-    require => Package['nginx'],
-    notify  => Service['nginx'],
-  }
-
-  service { 'nginx':
-    ensure => running,
-    enable => true,
-    require => File['/etc/nginx/sites-available/default'],
-  }
+package {'nginx':
+  ensure => 'present',
 }
 
-include nginx_server
+exec {'install':
+  command  => 'sudo apt-get update ; sudo apt-get -y install nginx',
+  provider => shell,
 
+}
+
+exec {'Hello':
+  command  => 'echo "Hello World!" | sudo tee /var/www/html/index.html',
+  provider => shell,
+}
+
+exec {'sudo sed -i "s/listen 80 default_server;/listen 80 default_server;\\n\\tlocation \/redirect_me {\\n\\t\\treturn 301 https:\/\/www.youtube.com\/@themathsclub\/;\\n\\t}/" /etc/nginx/sites-available/default':
+  provider => shell,
+}
+
+exec {'run':
+  command  => 'sudo service nginx restart',
+  provider => shell,
+}

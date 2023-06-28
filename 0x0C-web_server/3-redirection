@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Configure Nginx server so that /redirect_me is redirecting to another page
+# Configure Nginx server to redirect /redirect_me to another page
 
 # Install nginx
 sudo apt-get update
@@ -9,7 +9,7 @@ sudo apt-get install -y nginx
 echo "Hello World!" > /var/www/html/index.html
 
 # Modify the Nginx configuration
-sudo sed -i '/server_name _;/a \\\n\tlocation /redirect_me {\n\t\treturn 301 https:\/\/www.youtube.com\/watch?v=QH2-TGUlwu4;\n\t}' /etc/nginx/sites-enabled/default
+sudo sed -i 's/# server_names_hash_bucket_size 64;/server_names_hash_bucket_size 64;\n\n\tlocation \/redirect_me {\n\t\treturn 301 https:\/\/www.youtube.com\/watch?v=QH2-TGUlwu4;\n\t}/' /etc/nginx/sites-enabled/default
 
 # Restart Nginx
 sudo service nginx restart

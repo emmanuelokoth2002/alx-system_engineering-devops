@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
+
 # Install Apache
 sudo apt-get update
 sudo apt-get install -y apache2
 
-# Create a custom index.html file
-echo "Hello Holberton" | sudo tee /var/www/html/index.html
-
-# Configure Apache to serve the custom index.html file
-sudo sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\n\t<Directory \/var\/www\/html>\n\t\tOptions Indexes FollowSymLinks\n\t\tAllowOverride All\n\t<\/Directory>/' /etc/apache2/sites-available/000-default.conf
-
 # Enable Apache rewrite module
 sudo a2enmod rewrite
+
+# Create a custom index.html file with "Hello Holberton"
+echo "Hello Holberton" | sudo tee /var/www/html/index.html
 
 # Restart Apache
 sudo service apache2 restart

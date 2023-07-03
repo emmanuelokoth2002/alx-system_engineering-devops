@@ -1,7 +1,26 @@
 #!/usr/bin/env bash
 #configure web-02 to be identical to web-01
-sudo apt-get update
-sudo apt-get install nginx -y
-hostname = $(hostname)
-sudo sed -i '/http {/a \        server_tokens off;\n        add_header X-Served-By $hostname;' /etc/nginx/nginx.conf
+sudo apt update
+sudo apt upgrade -y
+sudo apt install nginx -y
+sudo bash -c 'cat > /etc/nginx/conf.d/custom_http_response_header.conf << EOF
+map \$http_x_forwarded_for \$proxy_add_x_forwarded_for {
+    "~^" "";
+    default "\$http_x_forwarded_for, \$remote_addr";
+}
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name _;
+
+    location / {
+        add_header X-Served-By \$hostname;
+        add_header X-Real-IP \$proxy_add_x_forwarded_for;
+        root /var/www/html;
+        index index.html index.htm;
+    }
+}
+EOF'
 sudo systemctl restart nginx

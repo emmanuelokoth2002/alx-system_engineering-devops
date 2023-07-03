@@ -12,6 +12,6 @@ frontend http_front
 
 backend http_back
     balance roundrobin
-    server web-01 [STUDENT_ID]-web-01:80 check
-    server web-02 [STUDENT_ID]-web-02:80 check
+    server 199936-web-01 54.145.241.156 check
+    server 199936-web-02 52.91.152.63 check
 sudo systemctl restart haproxy

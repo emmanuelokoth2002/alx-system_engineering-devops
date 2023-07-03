@@ -3,24 +3,11 @@
 sudo apt update
 sudo apt upgrade -y
 sudo apt install nginx -y
-sudo bash -c 'cat > /etc/nginx/conf.d/custom_http_response_header.conf << EOF
-map \$http_x_forwarded_for \$proxy_add_x_forwarded_for {
-    "~^" "";
-    default "\$http_x_forwarded_for, \$remote_addr";
-}
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    server_name _;
-
-    location / {
-        add_header X-Served-By \$hostname;
-        add_header X-Real-IP \$proxy_add_x_forwarded_for;
-        root /var/www/html;
-        index index.html index.htm;
-    }
-}
-EOF'
-sudo systemctl restart nginx
+echo "Hello World!" > /var/www/html/index.html
+string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.google.com permanent;"
+sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+string_for_replacement="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
+sudo sed -i "s/listen 80 default_server;/$string_for_replacement/" /etc/nginx/sites-available/default
+sudo sed -i '/^http {/a \\tadd_header X-Served-By $hostname;' /etc/nginx/nginx.conf
+sudo service nginx restart

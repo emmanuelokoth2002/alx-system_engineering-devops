@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#finding out what’s keeping your Ubuntu container’s Nginx installation from listening on port 80
+apt-get update
+apt-get install -y net-tools
+
+# Check active IPv4 IPs
+active_ips=$(ifconfig | grep "inet " | awk '{print $2}')
+
+# Start Nginx if not running
+service nginx status || service nginx start
+
+# Update Nginx configuration
+sed -i 's/listen 80;/listen 80 default_server;\n\tlisten [::]:80 default_server;/' /etc/nginx/sites-available/default
+
+# Restart Nginx
+service nginx restart
+
+# Verify Nginx listening on active IPs
+for ip in $active_ips; do
+  curl "$ip":80
+done

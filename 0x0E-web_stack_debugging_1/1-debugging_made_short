@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-service nginx stop
-rm /etc/nginx/sites-enabled/default
-echo "daemon off;" >> /etc/nginx/nginx.conf
-service nginx start
+# install nginx
+cp -r /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+service nginx restart
+pkill -o nginx

@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 '''Exports todo list to CSV for a given employee id'''
 
+import csv
 import requests
 import sys
-import csv
 
 base_url = 'https://jsonplaceholder.typicode.com/'
 

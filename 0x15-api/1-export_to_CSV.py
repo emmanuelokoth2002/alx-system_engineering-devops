@@ -1,86 +1,49 @@
 #!/usr/bin/python3
-
-"""
-Module to fetch and export employee TODO list progress to CSV format.
-"""
+'''Exports todo list to CSV for a given employee id'''
 
 import requests
 import sys
 import csv
 
+base_url = 'https://jsonplaceholder.typicode.com/'
 
-def get_employee_data(employee_id):
-    """
-    Fetches employee data and TODO list progress based on given employee ID.
 
-    Args:
-        employee_id (int): The employee ID.
-
-    Returns:
-        tuple: A tuple containing employee name and a list of completed tasks.
-    """
-    base_url = 'https://jsonplaceholder.typicode.com'
-    user_url = f'{base_url}/users/{employee_id}'
-    todos_url = f'{base_url}/todos?userId={employee_id}'
-
+def do_request():
+    '''Performs request'''
+    if len(sys.argv) < 2:
+        return print('USAGE:', __file__, '<employee id>')
+    eid = sys.argv[1]
     try:
-        # Fetch employee information
-        response = requests.get(user_url)
-        response.raise_for_status()
-        employee_data = response.json()
-        employee_name = employee_data['name']
-
-        # Fetch employee's TODO list
-        response = requests.get(todos_url)
-        response.raise_for_status()
-        todos_data = response.json()
-
-        # Extract completed tasks
-        completed_tasks = []
-        for todo in todos_data:
-            if todo['completed']:
-                completed_tasks.append(todo['title'])
-
-        return employee_name, completed_tasks
-
-    except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
-        sys.exit(1)
-    except KeyError:
-        print(f"Error: Employee with ID {employee_id} not found.")
-        sys.exit(1)
+        _eid = int(sys.argv[1])
     except ValueError:
-        print(f"Error: Invalid data received from the API.")
-        sys.exit(1)
+        return print('Employee id must be an integer')
 
+    response = requests.get(base_url + 'users/' + eid)
+    if response.status_code == 404:
+        return print('User id not found')
+    elif response.status_code != 200:
+        return print('Error: status_code:', response.status_code)
+    user = response.json()
 
-def export_to_csv(employee_id, employee_name, completed_tasks):
-    """
-    Exports employee TODO list progress to CSV format.
+    response = requests.get(base_url + 'todos/')
+    if response.status_code != 200:
+        return print('Error: status_code:', response.status_code)
+    todos = response.json()
 
-    Args:
-        employee_id (int): The employee ID.
-        employee_name (str): The name of the employee.
-        completed_tasks (list): List of completed tasks.
+    user_todos = [todo for todo in todos
+                  if todo.get('userId') == user.get('id')]
 
-    Returns:
-        None
-    """
-    filename = f"{employee_id}.csv"
-    with open(filename, mode='w', newline='') as file:
-        csv_writer = csv.writer(file, quoting=csv.QUOTE_ALL)
-        for task in completed_tasks:
-            csv_writer.writerow([employee_id, employee_name, "True", task])
-        # Include entries for tasks not completed as well (False status)
-        total_tasks = len(completed_tasks)
-        for _ in range(total_tasks, 20):
-            csv_writer.writerow([employee_id, employee_name, "False", ""])
+    filename = '{}.csv'.format(user.get('id'))
+    with open(filename, mode='w', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"',
+                                quoting=csv.QUOTE_ALL)
+        for todo in user_todos:
+            csv_writer.writerow([
+                user.get('id'),
+                user.get('name'),
+                todo.get('completed'),
+                todo.get('title')
+            ])
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2 or not sys.argv[1].isdigit():
-        print("Usage: ./export_to_CSV.py <employee_id>")
-        sys.exit(1)
-
-    employee_id = int(sys.argv[1])
-    employee_name, completed_tasks = get_employee_data(employee_id)
-    export_to_csv(employee_id, employee_name, completed_tasks)
+if __name__ == '__main__':
+    do_request()

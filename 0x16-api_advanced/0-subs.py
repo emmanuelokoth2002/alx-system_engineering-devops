@@ -5,14 +5,15 @@ Module to query the Reddit API for the number of subscribers in a subreddit.
 
 import requests
 
+
 def number_of_subscribers(subreddit):
     """
     Queries the Reddit API and returns the number of subscribers for a given
     subreddit.
-    
+
     Args:
         subreddit (str): The name of the subreddit.
-        
+
     Returns:
         int: The number of subscribers for the subreddit. If subreddit is
         invalid, returns 0.
@@ -31,7 +32,7 @@ def number_of_subscribers(subreddit):
 
 if __name__ == "__main__":
     import sys
-    
+
     if len(sys.argv) < 2:
         print("Please pass an argument for the subreddit to search.")
     else:

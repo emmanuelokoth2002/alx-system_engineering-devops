@@ -6,11 +6,12 @@ print keyword counts.
 
 import requests
 
+
 def count_words(subreddit, word_list, after=None):
     """
     Recursively queries the Reddit API, parses hot article titles, and prints
     a sorted count of keywords.
-    
+
     Args:
         subreddit (str): The name of the subreddit.
         word_list (list): A list of keywords to count.
@@ -38,9 +39,9 @@ def count_words(subreddit, word_list, after=None):
                 keyword = word.lower()
                 if f" {keyword} " in f" {title} ":
                     word_list[word] = word_list.get(word, 0) + 1
-        
+
         after = data["data"]["after"]
-        
+
         if after is None:
             sorted_words = sorted(word_list, key=lambda x: (-word_list[x], x))
             for word in sorted_words:
@@ -50,7 +51,7 @@ def count_words(subreddit, word_list, after=None):
 
 if __name__ == "__main__":
     import sys
-    
+
     if len(sys.argv) < 3:
         print("Usage: {} <subreddit> <list of keywords>".format(sys.argv[0]))
     else:

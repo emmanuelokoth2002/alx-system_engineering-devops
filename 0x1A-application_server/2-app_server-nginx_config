@@ -1,12 +1,16 @@
-erver {
+server {
+    # Listen on port 80
     listen 80;
-    server_name localhost;  # or your server's public IP or domain name
 
+    # Server name (domain or IP)
+    server_name 54.144.45.151;
+
+    # Location block to proxy requests
     location /airbnb-onepage/ {
-        proxy_pass http://127.0.0.1:5000;  # Proxy requests to your app server
+        proxy_pass http://127.0.0.1:5000/;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
     }
+
+    # Additional configurations (error pages, etc.)
 }
